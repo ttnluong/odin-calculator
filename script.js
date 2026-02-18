@@ -50,31 +50,38 @@ const equal = document.querySelector(".equal")
 let firstNumber = "";
 let secondNumber = "";
 let operator = "";
-let result = 0;
+let result = null;
 
 numbers.forEach((btn) => {
-btn.addEventListener("click", getNumbers);
-});
-
-function getNumbers(event) {
-    if (operator === "") {
-        firstNumber += event.target.value;
-        display.textContent = firstNumber;
-        console.log(firstNumber);
-    } else {
+btn.addEventListener("click", (event) => {
+    if (operator === "" && result === null) {
+        return getNumbers(event);
+    } 
+     else {
         secondNumber += event.target.value;
         display.textContent = secondNumber;
         console.log(secondNumber);
-}
-};
+    }
+});
+});
+
+function getNumbers(event) {
+        firstNumber += event.target.value;
+        display.textContent = firstNumber;
+        console.log(firstNumber);
+    };
 
 operators.forEach((btn) => {
 btn.addEventListener("click", (event) => {
-    if (operator === "" && result === 0) {
+    if (operator === "" && result === null) {
         return getOperator(event);
-    } else  {
-        result = operate();
-    } 
+    } else if (operator !== "" && result === null) {
+        return operate();
+    } else {
+        firstNumber = result;
+        operator += event.target.value;
+        return operate();
+    }
 });
 });
 
@@ -95,23 +102,27 @@ function operate() {
             result = num1 + num2;
             display.textContent = result;
             console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            break;
+            return reset();
         case "-":
             result = num1 - num2;
             display.textContent = result;
             console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            break;
+            return reset();
         case "x":
             result = num1 * num2;
             display.textContent = result;
             console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            break;
+            return reset();
         case "/":
             result = num1 / num2;
             display.textContent = result;
             console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            break;
+            return reset();
     }
+}
+
+function reset() {
+    secondNumber = "";
 }
 
 
