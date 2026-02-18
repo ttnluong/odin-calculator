@@ -41,3 +41,47 @@ function operate(a, b) {
             break;
     }
 }
+
+
+let firstNumber = 0;
+let display = document.getElementById("display");
+
+function getFirstNumber() {
+    display.textContent = "test";
+}
+
+let button = document.querySelectorAll("button");
+
+button.forEach((btn) => {
+btn.addEventListener("click", getFirstNumber);
+});
+
+/*
+
+function getFirstNumber() {
+    let input = document.querySelector("#button").value;
+    firstNumber += input;
+    document.getElementById("#display").textContent = `${firstNumber}`;
+    return firstNumber;
+}
+
+button.forEach((btn) => {
+  btn.addEventListener("click", (event) => {
+    let display = document.getElementById("display");
+    display.textContent = event.target.value;
+  })})
+
+
+button.addEventListener("click", (event) => {
+    event.preventDefault();
+    getFirstNumber();
+});
+
+
+button.addEventListener("click", (event) => {
+    event.preventDefault();
+    let input = document.querySelector("#button").value;
+    return input;
+}); */
+
+document.getElementById("#display").textContent = `${firstNumber} ${operator} ${secondNumber}`;
