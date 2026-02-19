@@ -15,113 +15,111 @@ function divide(a, b) {
     return a / b;  
 };
 
-
-function operate(a, b) {
-    if (operator = +) return add(a, b);
-    if (operator = -) return subtract(a, b);
-    if (operator = x) return multiply(a, b);
-    if (operator = /) return divide(a, b);
-}
-
-function operate(a, b) {
-    switch (operator) {
-        case plus:
-            return add(a, b);
-            break;
-        case minus:
-            return subtract(a, b);
-            break;
-        case times:
-            return multiply(a, b);
-            break;  
-        case divider:
-            return divide(a, b);
-            break;
-    }
-}
-
 */
 
 const display = document.getElementById("display");
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
 const equal = document.querySelector(".equal")
+const clear = document.querySelector(".clear")
 
 let firstNumber = "";
 let secondNumber = "";
-let operator = "";
+let operator = [];
 let result = null;
+let lastOperator;
 
 numbers.forEach((btn) => {
 btn.addEventListener("click", (event) => {
-    if (operator === "" && result === null) {
-        return getNumbers(event);
-    } 
-     else {
-        secondNumber += event.target.value;
-        display.textContent = secondNumber;
-        console.log(secondNumber);
+    if (operator.length == 0 && result === null) {
+        return getFirstNumber(event);
+    } else if (operator[operator.length - 1] == "=") {
+        firstNumber += event.target.value;
+        operator = [];
+        result = null;
+        console.log();
+    } else {
+        return getSecondNumber(event);
     }
 });
 });
 
-function getNumbers(event) {
-        firstNumber += event.target.value;
-        display.textContent = firstNumber;
-        console.log(firstNumber);
-    };
+function getFirstNumber(event) {
+    firstNumber += event.target.value;
+    display.textContent = firstNumber;
+    console.log(firstNumber);
+};
+
+function getSecondNumber(event) {
+    secondNumber += event.target.value;
+    display.textContent = secondNumber;
+    console.log(secondNumber);
+};
 
 operators.forEach((btn) => {
 btn.addEventListener("click", (event) => {
-    if (operator === "" && result === null) {
+    if (secondNumber === "") {
         return getOperator(event);
-    } else if (operator !== "" && result === null) {
-        return operate();
     } else {
-        firstNumber = result;
-        operator += event.target.value;
+        lastOperator = operator[operator.length - 1];
+        operator.push(event.target.value);
+        console.log(operator);
         return operate();
     }
 });
 });
 
 function getOperator(event) {
-        operator += event.target.value;
-        display.textContent = firstNumber;
-        console.log(operator);
-     };
+    operator.push(event.target.value);
+    display.textContent = firstNumber;
+    console.log(operator);
+};
 
-equal.addEventListener("click", operate);
+equal.addEventListener("click", (event) => {
+    operator.push(event.target.value);
+    lastOperator = operator[operator.length - 2];
+    console.log(operator);
+    operate();
+});
+
+clear.addEventListener("click", () => {
+    firstNumber = "";
+    secondNumber = "";
+    operator = [];
+    result = null;
+    display.textContent = "";
+});
 
 // why does operate() not take in variables when I write: operate(var1, var2)?
 function operate() {
-    let num1 = parseInt(firstNumber);
-    let num2 = parseInt(secondNumber);
-    switch (operator) {
+    let num1 = parseFloat(firstNumber);
+    let num2 = parseFloat(secondNumber);
+    switch (lastOperator) {
         case "+":
             result = num1 + num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            return reset();
+            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
+            return updateNumbers();
         case "-":
             result = num1 - num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            return reset();
+            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
+            return updateNumbers();
         case "x":
             result = num1 * num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            return reset();
+            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
+            return updateNumbers();
         case "/":
             result = num1 / num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
-            return reset();
+            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
+            return updateNumbers();
     }
 }
 
-function reset() {
+function updateNumbers() {
+    firstNumber = result;
     secondNumber = "";
 }
 
