@@ -60,7 +60,13 @@ operators.forEach((btn) => {
 btn.addEventListener("click", (event) => {
     if (secondNumber === "") {
         return getOperator(event);
+    } else if (secondNumber !== "" && result === null) {
+        lastOperator = operator[operator.length - 1];
+        operator.push(event.target.value);
+        console.log(operator);
+        return operate();
     } else {
+        firstNumber = result;
         lastOperator = operator[operator.length - 1];
         operator.push(event.target.value);
         console.log(operator);
@@ -71,15 +77,22 @@ btn.addEventListener("click", (event) => {
 
 function getOperator(event) {
     operator.push(event.target.value);
-    display.textContent = firstNumber;
     console.log(operator);
 };
 
 equal.addEventListener("click", (event) => {
-    operator.push(event.target.value);
-    lastOperator = operator[operator.length - 2];
-    console.log(operator);
-    operate();
+    if (result === null) {
+        operator.push(event.target.value);
+        lastOperator = operator[operator.length - 2];
+        console.log(operator);
+        operate();
+    } else {
+        firstNumber = result;
+        operator.push(event.target.value);
+        lastOperator = operator[operator.length - 2];
+        console.log(operator);
+        operate();
+    }
 });
 
 clear.addEventListener("click", () => {
@@ -99,27 +112,27 @@ function operate() {
             result = num1 + num2;
             display.textContent = result;
             console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
-            return updateNumbers();
+            return resetNumbers();
         case "-":
             result = num1 - num2;
             display.textContent = result;
             console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
-            return updateNumbers();
+            return resetNumbers();
         case "x":
             result = num1 * num2;
             display.textContent = result;
             console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
-            return updateNumbers();
+            return resetNumbers();
         case "/":
             result = num1 / num2;
             display.textContent = result;
             console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
-            return updateNumbers();
+            return resetNumbers();
     }
 }
 
-function updateNumbers() {
-    firstNumber = result;
+function resetNumbers() {
+    firstNumber = "";
     secondNumber = "";
 }
 
