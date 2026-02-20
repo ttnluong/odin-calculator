@@ -20,8 +20,10 @@ function divide(a, b) {
 const display = document.getElementById("display");
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
-const equal = document.querySelector(".equal")
-const clear = document.querySelector(".clear")
+const equal = document.querySelector(".equal");
+const clear = document.querySelector(".clear");
+const dot = document.querySelector(".dot");
+const del = document.querySelector(".delete");
 
 let firstNumber = "";
 let secondNumber = "";
@@ -29,15 +31,12 @@ let operator = [];
 let result = null;
 let lastOperator;
 
-numbers.forEach((btn) => {
-btn.addEventListener("click", (event) => {
+numbers.forEach((number) => {
+number.addEventListener("click", (event) => {
     if (operator.length == 0 && result === null) {
         return getFirstNumber(event);
     } else if (operator[operator.length - 1] == "=") {
-        firstNumber += event.target.value;
-        operator = [];
-        result = null;
-        console.log();
+        return resetCalculation(event);
     } else {
         return getSecondNumber(event);
     }
@@ -50,27 +49,28 @@ function getFirstNumber(event) {
     console.log(firstNumber);
 };
 
+function resetCalculation(event) {
+    firstNumber += event.target.value;
+    display.textContent = firstNumber;
+    operator = [];
+    result = null;
+    console.log(firstNumber);
+}
+
 function getSecondNumber(event) {
     secondNumber += event.target.value;
     display.textContent = secondNumber;
     console.log(secondNumber);
 };
 
-operators.forEach((btn) => {
-btn.addEventListener("click", (event) => {
+operators.forEach((operator) => {
+operator.addEventListener("click", (event) => {
     if (secondNumber === "") {
         return getOperator(event);
     } else if (secondNumber !== "" && result === null) {
-        lastOperator = operator[operator.length - 1];
-        operator.push(event.target.value);
-        console.log(operator);
-        return operate();
+        return operateWithFirstNumber(event);
     } else {
-        firstNumber = result;
-        lastOperator = operator[operator.length - 1];
-        operator.push(event.target.value);
-        console.log(operator);
-        return operate();
+        return operateWithResult(event);
     }
 });
 });
@@ -79,6 +79,21 @@ function getOperator(event) {
     operator.push(event.target.value);
     console.log(operator);
 };
+
+function operateWithFirstNumber(event) {
+    lastOperator = operator[operator.length - 1];
+    operator.push(event.target.value);
+    console.log(operator);
+    return operate();
+};
+
+function operateWithResult(event) {
+    firstNumber = result;
+    lastOperator = operator[operator.length - 1];
+    operator.push(event.target.value);
+    console.log(operator);
+    return operate();
+}
 
 equal.addEventListener("click", (event) => {
     if (result === null) {
@@ -102,6 +117,31 @@ clear.addEventListener("click", () => {
     result = null;
     display.textContent = "";
 });
+
+dot.addEventListener("click", (event) => {
+    if (display.textContent.includes(".")) {
+        display.textContent = firstNumber;
+    } else if (operator.length == 0 && result === null) {
+        firstNumber += event.target.value;
+        display.textContent = firstNumber;
+        console.log(firstNumber);
+    } else {
+        secondNumber += event.target.value;
+        display.textContent = secondNumber;
+        console.log(secondNumber);
+    }
+});
+
+del.addEventListener("click", () => {
+    if (secondNumber === "" && result === null) {
+        firstNumber = firstNumber.slice(0, -1);
+        display.textContent = firstNumber;
+    } else {
+        secondNumber = secondNumber.slice(0, -1);
+        display.textContent = secondNumber;
+    }
+});
+
 
 // why does operate() not take in variables when I write: operate(var1, var2)?
 function operate() {
