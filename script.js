@@ -120,7 +120,7 @@ clear.addEventListener("click", () => {
 
 dot.addEventListener("click", (event) => {
     if (display.textContent.includes(".")) {
-        display.textContent = firstNumber;
+        return;
     } else if (operator.length == 0 && result === null) {
         firstNumber += event.target.value;
         display.textContent = firstNumber;
@@ -177,27 +177,9 @@ function resetNumbers() {
 }
 
 
+
 /*
 
-
-operators.forEach((btn) => {
-btn.addEventListener("click", (event) => {
-    if (operator === "" && result === 0) {
-        return getOperator(event);
-    } else if (operator !== "" && result === 0) {
-        return operate();
-    } else {
-        firstNumber = result;
-        return operate();
-    }
-});
-
- if (result !== "") {
-        firstNumber = result;
-        return operate();
-    }
-
-a > operator > b > operate() = result = new a? > operator > b > operate() = result = new a?
-
+TO DO: add keyboard support
 
 */
