@@ -46,7 +46,6 @@ number.addEventListener("click", (event) => {
 function getFirstNumber(event) {
     firstNumber += event.target.value;
     display.textContent = firstNumber;
-    console.log(firstNumber);
 };
 
 function resetCalculation(event) {
@@ -54,13 +53,11 @@ function resetCalculation(event) {
     display.textContent = firstNumber;
     operator = [];
     result = null;
-    console.log(firstNumber);
 }
 
 function getSecondNumber(event) {
     secondNumber += event.target.value;
     display.textContent = secondNumber;
-    console.log(secondNumber);
 };
 
 operators.forEach((operator) => {
@@ -77,13 +74,11 @@ operator.addEventListener("click", (event) => {
 
 function getOperator(event) {
     operator.push(event.target.value);
-    console.log(operator);
 };
 
 function operateWithFirstNumber(event) {
     lastOperator = operator[operator.length - 1];
     operator.push(event.target.value);
-    console.log(operator);
     return operate();
 };
 
@@ -91,7 +86,6 @@ function operateWithResult(event) {
     firstNumber = result;
     lastOperator = operator[operator.length - 1];
     operator.push(event.target.value);
-    console.log(operator);
     return operate();
 }
 
@@ -99,13 +93,11 @@ equal.addEventListener("click", (event) => {
     if (result === null) {
         operator.push(event.target.value);
         lastOperator = operator[operator.length - 2];
-        console.log(operator);
         operate();
     } else {
         firstNumber = result;
         operator.push(event.target.value);
         lastOperator = operator[operator.length - 2];
-        console.log(operator);
         operate();
     }
 });
@@ -124,11 +116,9 @@ dot.addEventListener("click", (event) => {
     } else if (operator.length == 0 && result === null) {
         firstNumber += event.target.value;
         display.textContent = firstNumber;
-        console.log(firstNumber);
     } else {
         secondNumber += event.target.value;
         display.textContent = secondNumber;
-        console.log(secondNumber);
     }
 });
 
@@ -143,7 +133,6 @@ del.addEventListener("click", () => {
 });
 
 
-// why does operate() not take in variables when I write: operate(var1, var2)?
 function operate() {
     let num1 = parseFloat(firstNumber);
     let num2 = parseFloat(secondNumber);
@@ -151,22 +140,18 @@ function operate() {
         case "+":
             result = num1 + num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
             return resetNumbers();
         case "-":
             result = num1 - num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
             return resetNumbers();
         case "x":
             result = num1 * num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
             return resetNumbers();
         case "/":
             result = num1 / num2;
             display.textContent = result;
-            console.log(`${firstNumber} ${lastOperator} ${secondNumber} = ${result}`);
             return resetNumbers();
     }
 }
